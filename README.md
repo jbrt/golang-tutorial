@@ -30,6 +30,11 @@ This code can be compiled like this:
 $ go build 01-hello.go
 ```
 
+Note: 
+
+Another special Golang keywords print and println can be used for printing 
+messages not only functions from fmt package.
+
 ## Golang variables
 
 ### Variable declaration
@@ -243,7 +248,7 @@ func main() {
 }
 ```
 
-**Switch structure**
+### Switch structure
 
 A switch structure can be useful for removing a lot of else/if statements. 
 Switch statement can also have a default choice.
@@ -268,7 +273,7 @@ func main() {
 }
 ```
 
-**For loops**
+### For loops
 
 Golang support only one form of loop: the for loop.
 But this loop can also mimic while loop.
@@ -324,7 +329,7 @@ func main() {
 }
 ```
 
-**Defer keyword**
+### Defer keyword
 
 The defer keyword is useful for executing some code at the end of a function.
 For instance, if you open a file you can defer the close of that file at the 
@@ -375,3 +380,98 @@ Logical operators:
 | &&       | AND     |
 | \|\|     | OR      |
 | !        | NOT     |
+
+
+## Arrays, Slices and Maps
+
+### Arrays
+
+An array is a collection of data of the same type. This collection is immutable 
+(for mutable collection of data, look to slice section).
+
+Array element's can be accessed by an index number beginning at 0 value.
+
+```golang
+package main
+
+import (
+	"fmt"
+)
+
+func main() {
+	// First kind of declaration
+	var listOfDays [2]string
+	listOfDays[0] = "Sunday"
+	listOfDays[1] = "Monday"
+	fmt.Println(listOfDays[1])
+
+	// second kind of declaration
+	listOfMonths := []string{"March", "April"}
+	fmt.Println(listOfMonths[0])
+}
+```
+
+Once the length of an array has been initialized, **it's not possible to add 
+more elements beyond the length that has been defined.** 
+
+### Slices
+
+Slice offer more flexibility than arrays because it's possible to add elements 
+beyond the pre established slice size's.
+
+There is two ways for creating a new slice:
+
+```golang
+// First version, without initialization
+months := make([]string, 3) 
+
+// Second version with initialization 
+months := []string{"January", "February", "March"} 
+```
+
+Note:
+
+The make keyword is used for declaring several kind of variable without the 
+need of initialized them.
+
+Adding elements to a slice:
+
+```golang
+months[0] = "January"
+months[1] = "February"
+months[2] = "March"
+
+months = append(months, "April")
+fmt.Println(months[3])
+```
+
+Note:
+
+The append function is a variadic one, it's possible to add more than one 
+element at a time.
+
+### Maps
+
+A map is an unordered group of variable that is accessed by a key rather thant an index value like with a slice.
+
+Like slices, there is two ways for creating a map. One with content initialization and one without.
+
+```golang
+// First version, without initialization
+points := make(map[string]int) 
+
+// Second version with initialization 
+points := map[string]int{"John": 3, "Mathew": 5}
+```
+
+Elements can be added into a map like this:
+
+```golang
+points["Mark"] = 3
+```
+
+For deleting an element from a map, there is a special keyword for that: delete.
+
+```golang
+delete(points, "Mark")
+```
