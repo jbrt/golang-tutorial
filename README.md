@@ -475,3 +475,86 @@ For deleting an element from a map, there is a special keyword for that: delete.
 ```golang
 delete(points, "Mark")
 ```
+
+
+## Structures and pointers
+
+A structure is a composite type, it contains one or more base type under a 
+unique name.
+
+### Struct declaration
+
+Here is an example of structure declaration:
+
+```golang
+type Person struct {
+    Name string
+    Age  int
+}
+```
+
+### Struct initialization
+
+Initialization and usage of a structure:
+
+```golang
+package main
+
+import (
+	"fmt"
+)
+
+// Structure declaration
+type Person struct {
+    Name string
+    Age  int
+}
+
+func main() {
+    // Structure with initialization
+    person := Person{Name: "John", Age: 32}
+    // Access to structure member's
+    fmt.Println(person.Name)
+}
+```
+
+### Nested structure
+
+Structures can be nested to modelize complex data.
+
+```golang
+package main
+
+import (
+	"fmt"
+)
+
+// Structure declaration
+type Person struct {
+	Name    string
+	Age     int
+	Address Address
+}
+
+type Address struct {
+	Street string
+	City   string
+}
+
+func main() {
+	// Structure with initialization
+	person := Person{
+		Name: "John",
+		Age:  32,
+		Address: Address{
+			Street: "Main street",
+			City:   "London",
+		},
+	}
+	// Access to structure member's
+	fmt.Println(person.Address.Street)
+}
+```
+
+### Public and private values into structures
+
