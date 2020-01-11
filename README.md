@@ -477,7 +477,7 @@ delete(points, "Mark")
 ```
 
 
-## Structures and pointers
+## Structures 
 
 A structure is a composite type, it contains one or more base type under a 
 unique name.
@@ -556,5 +556,162 @@ func main() {
 }
 ```
 
-### Public and private values into structures
+### Public and private values
 
+With Golang it's possible to restrict the visibility of function, variables and
+structures to reproduce the objet concept of encapsulation.
+
+This mecanism works with Golang naming convention, there is no specific keyword
+"private" or "public" like with Java or C++ languages.
+
+Any variables, functions, structures with names starting with an uppercase 
+letter will be exported and visible from outside their package. 
+
+Conversely, variables, functions structures with names starting with a 
+lowercase letter won't be available outside their package.
+
+
+## Using methods and interfaces
+
+### Methods
+
+Golang is not an oriented object language. There is no inheritance or class definition (but Golang provides a kind of polymorphism).
+
+But you can create methods attached to structures (and other Golang types) for manipulating data and thus reproduce a kind of encapsulation (specificaly if 
+using the public/private values decribes in the previous chapter).
+
+Here is an example:
+
+```golang
+package main
+
+import (
+	"fmt"
+)
+
+// Structure declaration
+type Person struct {
+	name string
+	age  int
+}
+
+func (person Person) GetName() string {
+	return person.name
+}
+
+func main() {
+	// Structure with initialization
+	person := Person{
+		name: "John",
+		age:  32,
+	}
+	// Access to structure member's
+	fmt.Println(person.GetName())
+}
+```
+
+Method declaration are almost identicaly than normal function but they have an 
+extra field between the func keyword and the name of the function/method.
+
+This field is called a receiver and it describes the relationship between this 
+method and the target Golang data type. Here, it's a relationship between this 
+method called GetName and the Person data structure. 
+
+Inside the method it's possible to access to the data field of the Person 
+structure with the variable name given into the receiver.
+
+### Methods and pointers
+
+For changing structures values with methods, pointers must be used. If not, 
+values won't change. Pointers must be declared with * character into the 
+receiver.
+
+```golang
+package main
+
+import (
+	"fmt"
+)
+
+// Person structure declaration
+type Person struct {
+	name string
+	age  int
+}
+
+// GetName return the name of the person
+func (person Person) GetName() string {
+	return person.name
+}
+
+// SetName can change the name of one person
+// Here the receiver is a pointer to the structure.
+// If not we can't change the person's name
+func (person *Person) SetName(name string) {
+	person.name = name
+}
+
+func main() {
+	// Structure with initialization
+	person := Person{
+		name: "John",
+		age:  32,
+	}
+	// Access to structure member's
+	fmt.Println(person.GetName())
+
+	// Change the name of this person
+	person.SetName("William")
+	fmt.Println(person.GetName())
+}
+```
+
+### Interfaces
+
+Interfaces can be compared as blueprints for method sets. An interface 
+describes methods signatures without implement it.
+
+```golang
+type Rectangle interface {
+    Perimeter() float64
+}
+```
+
+There is no need to implement (with a keyword) interfaces in Golang, 
+interfaces are **implicitly implemented**. If a structure implement all 
+methods described into an interface, then this structure is compliant to the
+interface.
+
+```golang
+package main
+
+import (
+	"fmt"
+)
+
+// Rectangle is an interface for describing Perimeter method
+type Rectangle interface {
+	Perimeter() float64
+}
+
+// Square is a kind of rectangle
+type Square struct {
+	length float64
+	width  float64
+}
+
+// Perimeter method
+func (square Square) Perimeter() float64 {
+	return square.length*2 + square.width*2
+}
+
+// DisplayPerimeter will take a rectangle (so an interface) as parameter
+func DisplayPerimeter(rectangle Rectangle) {
+	fmt.Println(rectangle.Perimeter())
+}
+
+func main() {
+	s := Square{length: 2.0, width: 2.0}
+	DisplayPerimeter(s)
+}
+```
