@@ -715,3 +715,93 @@ func main() {
 	DisplayPerimeter(s)
 }
 ```
+
+
+## Error handling in Golang
+
+### Errors
+
+There is no exception in Golang but Golang gives a specific error data type. 
+Errors in Golang are returned from functions or methods like other values.
+
+Errors can be created from the "errors" package like this:
+
+```golang
+package main
+
+import (
+	"errors"
+	"fmt"
+)
+
+func returnAnErrorIfValuesNotEqual(first, second int) (bool, error) {
+	if first != second {
+		err := errors.New("These numbers are not equals")
+		return false, err
+	}
+	return true, nil
+}
+
+func main() {
+	_, err := returnAnErrorIfValuesNotEqual(1, 2)
+	if err != nil {
+		fmt.Println("Error while calling function: ")
+		fmt.Println(err)
+	}
+}
+```
+
+The following pattern is an idiomatic one in Golang for error handling:
+
+```golang
+value, err := oneFunction()
+if err != nil {
+    // Do action from error remediation
+}
+```
+
+### Panic and Recover
+
+Golang offers two functions for managing errors. 
+The first one is panic that is a built-in function in Golang which stops the ordinary flow of the program and halt the execution of the program.
+
+```golang
+package main
+
+import (
+    "fmt"
+)
+
+func main() {
+    fmt.Println("Before panic")
+    panic("Critical error, can't go ahead...")
+    fmt.Println("This string will never be printed")
+}
+```
+
+The second one is recover and this function is used to get back the control of 
+the program after this one starting panicking.
+
+```golang
+package main
+
+import (
+	"fmt"
+)
+
+func functionWillPanic() {
+	defer func() {
+		if r := recover(); r != nil {
+			fmt.Println("Recover the problem")
+		}
+	}()
+
+	panic("I got a problem !!")
+}
+
+func main() {
+	fmt.Println("Before panic")
+	functionWillPanic()
+	fmt.Println("This string will be printed")
+}
+```
